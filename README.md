@@ -70,6 +70,12 @@ If the filename ends with `.url` suffix, the content will be processed as an URL
   - required: false
   - type: string
 
+- `INITIAL_DELAY`
+  - description: The amount in seconds to wait for the sidecar to start sending request to the given `REQ_URL`. This allows the app to finish its startup process gracefully. Default is '0' (no delay).
+  - required: false
+  - default: 0
+  - type: string
+
 - `SLEEP_TIME`
   - description: How many seconds to wait before updating config-maps when using `SLEEP` method.
   - required: false
@@ -95,6 +101,11 @@ If the filename ends with `.url` suffix, the content will be processed as an URL
   - description: If you use POST you can also provide json payload
   - required: false
   - type: json
+
+- `REQ_PAYLOAD_FILENAME`
+  - description: Defines a files name whose content should be send to the `REQ_URL` 
+  - required: false
+  - type: string
 
 - `REQ_PASSWORD`
   - description: Password to use for basic authentication
