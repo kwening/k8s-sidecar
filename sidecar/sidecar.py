@@ -8,6 +8,8 @@ from resources import listResources, watchForChanges
 
 from helpers import timestamp
 
+from time import sleep
+
 def main():
     print(f"{timestamp()} Starting collector")
 
@@ -60,6 +62,8 @@ def main():
         print(f"{timestamp()} Unique filenames will not be enforced.")
         uniqueFilenames = False
 
+    sleep(int(os.getenv("INITIAL_DELAY", 0)))
+    
     if os.getenv("METHOD") == "LIST":
         for res in resources:
             listResources(label, labelValue, targetFolder, url, method, payload,
