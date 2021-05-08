@@ -162,6 +162,10 @@ def _watch_resource_iterator(label, labelValue, targetFolder, url, method, paylo
             if (eventType == "ADDED") or (eventType == "MODIFIED"):
                 filename, filedata = _get_file_data_and_name(data_key, dataMap[data_key],
                                                                 resource)
+
+                if(os.getenv("PAYLOAD_FROM_FILE") and filename == os.getenv("PAYLOAD_FROM_FILE")):
+                    payload = filedata
+                    
                 if uniqueFilenames:
                     filename = uniqueFilename(filename      = filename,
                                               namespace     = metadata.namespace,

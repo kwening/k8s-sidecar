@@ -76,6 +76,11 @@ def request(url, method, payload=None):
         os.getenv("REQ_RETRY_BACKOFF_FACTOR"))
     timeout = 10 if os.getenv("REQ_TIMEOUT") is None else float(os.getenv("REQ_TIMEOUT"))
 
+    if os.getenv("REQ_CONTENT_TYPE"):
+        headers = {'Content-Type': os.getenv("REQ_CONTENT_TYPE")}
+    else:
+        headers = {'Content-Type': 'application/json'}
+
     username = os.getenv("REQ_USERNAME")
     password = os.getenv("REQ_PASSWORD")
     if username and password:
@@ -97,9 +102,13 @@ def request(url, method, payload=None):
 
     # If method is not provided use GET as default
     if method == "GET" or not method:
-        res = r.get("%s" % url, auth=auth, timeout=timeout)
+        res = r.get("%s" % url, auth=auth, timeout=timeout, headers=headers)
     elif method == "POST":
-        res = r.post("%s" % url, auth=auth, json=payload, timeout=timeout)
+        res = r.post("%s" % url, auth=auth, data=payload, timeout=timeout, headers=headers)
+        print(f"{timestamp()} {method} request sent to {url}. "
+              f"Response: {res.status_code} {res.reason} {res.text}")
+    elif method == "PATCH":
+        res = r.patch("%s" % url, auth=auth, data=payload, timeout=timeout, headers=headers)
         print(f"{timestamp()} {method} request sent to {url}. "
               f"Response: {res.status_code} {res.reason} {res.text}")
     return res
